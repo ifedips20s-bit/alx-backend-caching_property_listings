@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:18
+    container_name: alx_postgres
+    environment:
+      POSTGRES_USER: alx_user
+      POSTGRES_PASSWORD: mysecretpassword123
+      POSTGRES_DB: alx_property_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - alx_network
+
+  redis:
+    image: redis:latest
+    container_name: alx_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - alx_network
+
+volumes:
+  postgres_data:
+
+networks:
+  alx_network:
+    driver: bridge
