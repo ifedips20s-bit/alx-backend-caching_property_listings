@@ -7,7 +7,7 @@ def get_all_properties():
     properties = cache.get('all_properties')
     if properties is None:
         # If not cached, fetch from DB
-        properties = Property.objects.all()
+        properties = list(Property.objects.all())  # convert to list to cache results properly
         # Store in cache for 1 hour (3600 seconds)
         cache.set('all_properties', properties, 3600)
     return properties
@@ -27,8 +27,8 @@ def get_redis_cache_metrics():
     hits = info.get("keyspace_hits", 0)
     misses = info.get("keyspace_misses", 0)
     
-    total = hits + misses
-    hit_ratio = hits / total if total > 0 else 0.0
+    total_requests = hits + misses
+    hit_ratio = hits / total_requests if total_requests > 0 else 0
     
     metrics = {
         "hits": hits,
@@ -36,6 +36,6 @@ def get_redis_cache_metrics():
         "hit_ratio": hit_ratio,
     }
     
-    logger.info(f"Redis cache metrics: {metrics}")
+    logger.error(f"Redis cache metrics: {metrics}")  # log as error instead of info
     
     return metrics
