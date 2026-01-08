@@ -1,6 +1,7 @@
 services:
   postgres:
-    image: postgres:16
+    image: postgres:latest
+    container_name: alx_postgres
     environment:
       POSTGRES_USER: alx_user
       POSTGRES_PASSWORD: your_password
@@ -8,10 +9,11 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
 
   redis:
     image: redis:latest
+    container_name: alx_redis
     ports:
       - "6379:6379"
     volumes:
@@ -20,3 +22,19 @@ services:
 volumes:
   postgres_data:
   redis_data:
+
+  web:
+    build: .
+    container_name: alx_web
+    command: python manage.py runserver 0.0.0.0:8001
+    volumes:
+      - .:/code
+    ports:
+      - "8001:8001"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_NAME: alx_property_db
+      DATABASE_USER: alx_user
+      DATABASE_PASSWORD: your_password

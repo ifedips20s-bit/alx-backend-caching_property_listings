@@ -53,7 +53,7 @@ DATABASES = {
         'NAME': 'alx_property_db',
         'USER': 'alx_user',
         'PASSWORD': 'your_password',
-        'HOST': '127.0.0.1', 
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
